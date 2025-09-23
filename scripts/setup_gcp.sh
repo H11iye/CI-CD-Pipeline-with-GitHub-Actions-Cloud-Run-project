@@ -2,7 +2,7 @@
 set -euo pipefail
 
 #Load variables from (.env or GitHub secrets)
-PROJECT_ID="${PROJECT_ID}"
+PROJECT_ID="${GCP_PROJECT_ID}"
 REGION="${GCP_REGION:-us-central1}"
 REPO_NAME="${GCP_REPO_NAME:-ci-cd-cloud-run}"
 SERVICE_ACCOUNT_NAME="${GCP_SA_NAME:-github-actions-cloud-run}"
