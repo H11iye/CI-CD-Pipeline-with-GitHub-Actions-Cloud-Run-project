@@ -15,13 +15,19 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      
+
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
 
+      - name: Verify gcloud authentication
+        run: |
+          gcloud auth list
+
+
+      
       - name: Run GCP setup script
         run: bash scripts/setup_gcp.sh
         env:
