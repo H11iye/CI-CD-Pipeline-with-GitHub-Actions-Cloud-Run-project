@@ -35,7 +35,7 @@ jobs:
 
       - name: Build & Push Docker image to Artifact Registry
         run: |
-          IMAGE="{{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPO_NAME }}/my-app"
+          IMAGE="${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPO_NAME }}/my-app"
           docker build -t $IMAGE:$GITHUB_SHA .
           docker push $IMAGE:$GITHUB_SHA
           echo "IMAGE=$IMAGE:$GiTHUB_SHA" >> $GITHUB_ENV
