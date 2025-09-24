@@ -1,4 +1,4 @@
-name: Deploy to Cloud Run
+name: Build and Deploy to Cloud Run
 
 on: 
   push:
@@ -27,22 +27,15 @@ jobs:
         run: |
           gcloud auth list
 
-
-      
-      - name: Run GCP setup script
-        run: bash scripts/setup_gcp.sh
+      - name: Configure Docker auth for Artifact Registry
+        run: gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev --quiet
         env:
-          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          GCP_REGION: us-central1
-          GCP_REPO_NAME: -ci-cd-cloud-run
-          GCP_SA_NAME: -github-actions-cloud-run
-
-      - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+          GCP_REGION: ${{ secrets.GCP_REGION }}
+      
 
       - name: Build & Push Docker image to Artifact Registry
         run: |
-          IMAGE="us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/-ci-cd-cloud-run/my-app"
+          IMAGE="{{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPO_NAME }}/my-app"
           docker build -t $IMAGE:$GITHUB_SHA .
           docker push $IMAGE:$GITHUB_SHA
           echo "IMAGE=$IMAGE:$GiTHUB_SHA" >> $GITHUB_ENV
@@ -51,6 +44,6 @@ jobs:
         run: |
           gcloud run deploy my-app \
             --image $IMAGE \
-            --region us-central1 \
+            --region ${{ secrets.GCP_REGION }} \
             --platform managed \
             --allow-unauthenticated 
