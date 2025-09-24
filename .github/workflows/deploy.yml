@@ -28,7 +28,7 @@ jobs:
           gcloud auth list
 
       - name: Configure Docker auth for Artifact Registry
-        run: gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev --quiet
+        run: gcloud auth configure-docker ${ { secrets.GCP_REGION }}-docker.pkg.dev --quiet
         env:
           GCP_REGION: ${{ secrets.GCP_REGION }}
       
