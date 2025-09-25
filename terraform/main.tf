@@ -59,6 +59,15 @@ resource "google_project_iam_member" "sa_artifact_writer" {
     member  = "serviceAccount:${google_service_account.ci_deployer.email}"
 }
 
+
+
+# Allow pushing image to Artifact Registry
+resource "google_project_iam_member" "sa_storage_admin" {
+  project = var.project_id
+    role    = "roles/storage.admin"
+    member  = "serviceAccount:${google_service_account.ci_deployer.email}"
+}
+
 # Allow accessing secrets
 resource "google_project_iam_member" "sa_secret_accessor" {
   project = var.project_id
