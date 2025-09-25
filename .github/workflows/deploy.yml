@@ -34,10 +34,16 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       
-    # # Verify gcloud authentication
-    #   - name: Verify gcloud authentication
-    #     run: |
-    #       gcloud auth list
+    # Verify gcloud authentication
+      - name: Verify gcloud authentication
+        run: |
+          gcloud auth list
+
+      # Verify Artifact Registry access
+
+      - name: Verify Artifact Registry access
+        run: |
+          gcloud artifacts repositories list --location=${{ secrets.GCP_REGION }}
 
       - name: Configure Docker auth for Artifact Registry
         run: gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev --quiet
