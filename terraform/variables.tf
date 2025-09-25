@@ -10,6 +10,6 @@ variable "region" {
 
 variable "app_name" {
   type = string
-  default = "my_app"
+  default = "my-app"
 }
 
