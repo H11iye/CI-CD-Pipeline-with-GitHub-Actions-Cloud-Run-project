@@ -38,7 +38,7 @@ resource "google_artifact_registry_repository" "repo" {
 
 }
 
-# Service Account for CI deploys (created by Terraform)
+# Service Account for CI/CD deployments (created by Terraform)
 
 resource "google_service_account" "ci_deployer" {
     account_id   = "${var.app_name}-ci-deployer"
@@ -59,9 +59,19 @@ resource "google_project_iam_member" "sa_artifact_writer" {
     member  = "serviceAccount:${google_service_account.ci_deployer.email}"
 }
 
+# Allow accessing secrets
 resource "google_project_iam_member" "sa_secret_accessor" {
   project = var.project_id
     role    = "roles/secretmanager.secretAccessor"
+    member  = "serviceAccount:${google_service_account.ci_deployer.email}"
+}
+
+
+# Allow the CI/CD pipeline SA to impersonate this SA
+
+resource "google_project_iam_member" "sa_impersonate" {
+  project = var.project_id
+    role    = "roles/iam.serviceAccountUser"
     member  = "serviceAccount:${google_service_account.ci_deployer.email}"
 }
 
@@ -73,8 +83,9 @@ resource "google_cloud_run_v2_service" "service" {
 
     template {
         containers {
-            # Placeholder public hello image
-            image = "us-docker.pkg.dev/cloudrun/container/hello"
+            # # Placeholder public hello image
+            # image = "us-docker.pkg.dev/cloudrun/container/hello"
+            image = "${var.region}-docker.pkg.dev/${var.project_id}/${var.app_name}-repo/${var.app_name}:latest"
         }
     }
 }
