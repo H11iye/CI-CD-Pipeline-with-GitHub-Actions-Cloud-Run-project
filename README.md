@@ -29,22 +29,6 @@ This project demonstrates how to deploy a FastAPI application to Google Cloud Ru
     - Service Account with IAM bindings
 - Secrets managed via GitHub Secrets and Google Secret Manager.
 
-## 🛠️ Project Structure
-.
-├── app/
-│   ├── main.py            # FastAPI entrypoint
-│   └── requirements.txt   # Python dependencies
-├── Dockerfile             # Build instructions
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yml      # GitHub Actions workflow
-├── terraform/
-│   ├── main.tf            # Resources definition
-│   ├── variables.tf       # Input variables
-│   ├── outputs.tf         # Outputs
-│   └── providers.tf       # Google provider config
-└── README.md
-
 
 ## Setup
 
@@ -54,10 +38,18 @@ This project demonstrates how to deploy a FastAPI application to Google Cloud Ru
     ```
 2. **🏗️ Infrastructure with Terraform:**
 
+   ```
     cd terraform
+      ```
+      ```
     terraform init
+    ```
+    ```
     terraform plan
+    ```
+   ```
     terraform apply
+    ```
 
     ### This provisions:
 
@@ -86,16 +78,16 @@ This project demonstrates how to deploy a FastAPI application to Google Cloud Ru
 
     4. **Deploy to Cloud Run.**
     ### Trigger:
-    - Runs automatically on each push to main .
+    - Runs automatically on each `push` to `main` .
 ## ▶️ Local Development:
 
-- pip install -r app/requirements.txt
+- ```pip install -r app/requirements.txt```
 
-- uvicorn app.main:app --host 0.0.0.0 --port 8080
+- ```uvicorn app.main:app --host 0.0.0.0 --port 8080```
 
 ## 🌐 Deployment:
 After a successful pipeline run, your app will be available at:
-- https://<APP_NAME>-<REGION>-a.run.app
+- ```https://<APP_NAME>-<REGION>-a.run.app```
 
 ## 🧰 Tools Used:
 - FastAPI
