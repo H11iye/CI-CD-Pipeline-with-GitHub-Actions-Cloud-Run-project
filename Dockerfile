@@ -15,6 +15,9 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 #copy app
 COPY app/ .
 
-#Run with uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Expose port for Cloud Run
+EXPOSE 8080
+
+#Run FastAPI with uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
 
